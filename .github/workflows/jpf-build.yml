@@ -33,7 +33,7 @@ jobs:
       - name: Run Maven Dependecies Report
         run: mvn project-info-reports:dependencies
 
-      - name: Danger
+      - name: DangerJS Action
         if: (github.event_name == 'pull_request' && github.event.action != 'closed')
         uses: jpfulton/danger-js-action@main
         with:

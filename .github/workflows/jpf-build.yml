@@ -1,4 +1,4 @@
-name: Test Build Workflow
+name: Build Workflow
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          java-version: 17
+          java-version: 11
           distribution: 'temurin'
 
       - name: Build with Maven
@@ -32,3 +32,10 @@ jobs:
 
       - name: Run Maven Dependecies Report
         run: mvn project-info-reports:dependencies
+
+      - name: Danger
+        if: (github.event_name == 'pull_request' && github.event.action != 'closed')
+        uses: jpfulton/danger-js-action@main
+        with:
+          dangerfile: https://raw.githubusercontent.com/jpfulton/jpfulton-devops-config/main/danger-files/dangerfile-java-project.ts
+          token: ${{ secrets.GITHUB_TOKEN }}
